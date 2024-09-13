@@ -1,0 +1,10 @@
+@charset "ISO-8859-1";
+
+.button{
+	background: #CAF0FF;
+	padding: 10px 20px;
+	border-radius: 40px;
+	text-align: center;
+	text-decoration: none;
+	color: white;
+}

@@ -1,0 +1,59 @@
+package com.crimsonlogic.hostelmanagementsystem.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.crimsonlogic.hostelmanagementsystem.entity.Room;
+import com.crimsonlogic.hostelmanagementsystem.exception.ResourceNotFoundException;
+import com.crimsonlogic.hostelmanagementsystem.repository.RoomRepository;
+
+@Service
+@Transactional
+public class RoomServiceImpl implements RoomService {
+
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Override
+    public Room addRoom(Room room) {
+        return roomRepository.save(room);
+    }
+
+    @Override
+    public List<Room> listAllRooms() {
+        return roomRepository.findAll();
+    }
+
+    @Override
+    public Room showRoomById(String roomId) {
+        return roomRepository.findById(roomId).get();
+    }
+
+    @Override
+    public void deleteRoom(String roomId) {
+        Room room = showRoomById(roomId);
+        if (room != null) {
+            roomRepository.deleteById(roomId);
+        }
+    }
+
+    @Override
+    public void updateRoom(String roomId, Room room) throws ResourceNotFoundException {
+        Room existingRoom = showRoomById(roomId);
+        if (existingRoom != null) {
+            existingRoom.setRoomNumber(room.getRoomNumber());
+            existingRoom.setRoomFloorNumber(room.getRoomFloorNumber());
+            existingRoom.setRoomType(room.getRoomType());
+            existingRoom.setPrice(room.getPrice());
+            existingRoom.setAvailability(room.getAvailability());
+            existingRoom.setHostel(room.getHostel());
+            roomRepository.save(existingRoom);
+        } else {
+            throw new ResourceNotFoundException("Room not found");
+        }
+    }
+}
