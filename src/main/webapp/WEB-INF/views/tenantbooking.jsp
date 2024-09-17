@@ -121,71 +121,69 @@
 		<div class="row">
 			<div class="col-4 hero p-5">
 				<div class=" form-group form-floating">
-				<select id="filterSelect" class="form-select"
-					onchange="filterBookings()">
-					<option value="all">All Bookings</option>
-					<option value="3">Last 3 Months</option>
-					<option value="6">Last 6 Months</option>
-					<option value="12">Last 12 Months</option>
-				</select> <label for="filterSelect" class="form-label">Filter here</label>
+					<select id="filterSelect" class="form-select"
+						onchange="filterBookings()">
+						<option value="all">All Bookings</option>
+						<option value="3">Last 3 Months</option>
+						<option value="6">Last 6 Months</option>
+						<option value="12">Last 12 Months</option>
+					</select> <label for="filterSelect" class="form-label">Filter here</label>
 				</div>
 			</div>
-		<div class="col-8 p-5">
-			<!-- <div class="row justify-content-center" style="gap: 40px;"> -->
-			<h2 class="text-center mb-5">Your Bookings</h2>
-			<c:if test="${not empty bookings}">
-				<!-- Container for bookings -->
-				<div id="bookingsContainer"
-					class=" d-flex flex-column justify-content-center align-items-center"
-					style="gap: 20px;">
-					<c:forEach var="booking" items="${bookings}">
-						<div class="card w-75 booking-card"
-							data-checkindate="${booking.checkInDate}">
-							<div
-								class="card-header d-flex justify-content-between align-items-end">
-								<div>
-									<p class="text-grey fw-semibold card-text"
-										style="font-size: 18px;">${booking.room.hostel.hostelName}</p>
-									<p class="text-grey text-capitalize card-text"
-										style="font-size: 14px;">${booking.room.roomType}room</p>
-								</div>
-								<p class="text-grey text-capitalize card-text"
-									style="font-size: 14px;">Room: ${booking.room.roomNumber}</p>
-							</div>
-							<div class="card-body">
-								<p class="card-text text-capitalize">Status:
-									${booking.status}</p>
-								<p class="card-text">
-									Period of stay:
-									<fmt:parseDate value="${booking.checkInDate}" var="checkInDate"
-										pattern="yyyy-MM-dd" />
-									<fmt:parseDate value="${booking.checkOutDate}"
-										var="checkOutDate" pattern="yyyy-MM-dd" />
-									<fmt:formatNumber
-										value="${(checkOutDate.time - checkInDate.time) / (1000 * 60 * 60 * 24)}"
-										type="number" maxFractionDigits="0" />
-									${daysOfStay} Days <span style="font-size: 12px;"
-										class="text-grey"> (<fmt:formatDate
-											value="${booking.checkInDate}" pattern="dd/MM/yyyy" /> to <fmt:formatDate
-											value="${booking.checkOutDate}" pattern="dd/MM/yyyy" />)
-									</span>
-								</p>
-							</div>
-						</div>
-					</c:forEach>
-				</div>
-			</c:if>
-
-			<c:if test="${empty bookings}">
-				<div class="alert alert-warning" role="alert">${message}</div>
-			</c:if>
-
-			<a href="${pageContext.request.contextPath}/tenant/dashboard"
+			<div class="col-8 p-5">
+				<h2 class="text-center mb-5">Your Bookings</h2>
+				<%-- <a href="${pageContext.request.contextPath}/tenant/dashboard"
 				class="button btn-block w-50 text-decoration-none text-dark">Back
-				to Dashboard</a>
+				to Dashboard</a> --%>
+				<c:if test="${not empty bookings}">
+					<!-- Container for bookings -->
+					<div id="bookingsContainer"
+						class=" d-flex flex-column justify-content-center align-items-center"
+						style="gap: 20px;">
+						<c:forEach var="booking" items="${bookings}">
+							<div class="card w-75 booking-card"
+								data-checkindate="${booking.checkInDate}">
+								<div
+									class="card-header d-flex justify-content-between align-items-end">
+									<div>
+										<p class="text-grey fw-semibold card-text"
+											style="font-size: 18px;">${booking.room.hostel.hostelName}</p>
+										<p class="text-grey text-capitalize card-text"
+											style="font-size: 14px;">${booking.room.roomType}room</p>
+									</div>
+									<p class="text-grey text-capitalize card-text"
+										style="font-size: 14px;">Room: ${booking.room.roomNumber}</p>
+								</div>
+								<div class="card-body">
+									<p class="card-text text-capitalize">Status:
+										${booking.status}</p>
+									<p class="card-text">
+										Period of stay:
+										<fmt:parseDate value="${booking.checkInDate}"
+											var="checkInDate" pattern="yyyy-MM-dd" />
+										<fmt:parseDate value="${booking.checkOutDate}"
+											var="checkOutDate" pattern="yyyy-MM-dd" />
+										<fmt:formatNumber
+											value="${(checkOutDate.time - checkInDate.time) / (1000 * 60 * 60 * 24)}"
+											type="number" maxFractionDigits="0" />
+										${daysOfStay} Days <span style="font-size: 12px;"
+											class="text-grey"> (<fmt:formatDate
+												value="${booking.checkInDate}" pattern="dd/MM/yyyy" /> to <fmt:formatDate
+												value="${booking.checkOutDate}" pattern="dd/MM/yyyy" />)
+										</span>
+									</p>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
+				</c:if>
+
+				<c:if test="${empty bookings}">
+					<div class="alert alert-warning" role="alert">${message}</div>
+				</c:if>
+
+			</div>
 		</div>
-		</div>
-		<!-- </div> -->
 	</section>
 
 

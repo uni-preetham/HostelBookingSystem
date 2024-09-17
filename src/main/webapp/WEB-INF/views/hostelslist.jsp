@@ -1,10 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hostel Details</title>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -87,11 +88,10 @@
 					<div class="navbar-nav">
 						<a class="nav-item nav-link text-grey"
 							href="${pageContext.request.contextPath}/tenant/dashboard">Home</a>
-						
+
 						<a class="nav-item nav-link text-grey"
 							href="${pageContext.request.contextPath}/booking/viewbooking/${sessionScope.user.tenantId}">View
-							bookings</a>
-						<a class="nav-item nav-link text-grey"
+							bookings</a> <a class="nav-item nav-link text-grey"
 							href="${pageContext.request.contextPath}/feedback/showfeedbackform">Feedback</a>
 					</div>
 				</div>
@@ -116,97 +116,63 @@
 		</nav>
 	</header>
 
-
+	<!-- --------------------BODY-------------------- -->
 	<section>
 		<div class="row">
 			<div class="col-4 hero p-5">
-				<h1 class="text-center text-dark mb-5">${hostel.hostelName}</h1>
-				<ul style="list-style-type: none;">
-					<li><i class="fa-solid fa-location-dot p-3"></i>${hostel.hostelLocation}</li>
-					<li><i class="fa-solid fa-hashtag p-3"></i></i>${hostel.hostelId}</li>
-					<li><i class="fa-solid fa-circle-info p-3"></i>${hostel.hostelDescription}</li>
-				</ul>
+				<form
+					action="${pageContext.request.contextPath}/hostel/filterhostels"
+					method="GET">
+					<div class="card mb-3" style="font-size: 14px;">
+						<div class="card-header">
+							<label for="amenities">Filter by amenities:</label>
+						</div>
+						<ul class="list-group list-group-flush px-3">
+							<li class="list-group-item"><input type="checkbox"
+								name="amenities" value="TV"
+								<c:if test="${selectedAmenities != null and selectedAmenities.contains('TV')}">checked</c:if>>
+								<label for="tv" class="px-2">TV</label></li>
+							<li class="list-group-item"><input type="checkbox"
+								name="amenities" value="Parking"
+								<c:if test="${selectedAmenities != null and selectedAmenities.contains('Parking')}">checked</c:if>>
+								<label for="tv" class="px-2">Parking</label></li>
+							<li class="list-group-item"><input type="checkbox"
+								name="amenities" value="Hot water"
+								<c:if test="${selectedAmenities != null and selectedAmenities.contains('Hot water')}">checked</c:if>>
+								<label for="tv" class="px-2">Hot water</label></li>
+							<li class="list-group-item"><input type="checkbox"
+								name="amenities" value="CCTV"
+								<c:if test="${selectedAmenities != null and selectedAmenities.contains('CCTV')}">checked</c:if>>
+								<label for="tv" class="px-2">CCTV</label></li>
+							<li class="list-group-item"><input type="checkbox"
+								name="amenities" value="Wi-Fi"
+								<c:if test="${selectedAmenities != null and selectedAmenities.contains('Wi-Fi')}">checked</c:if>>
+								<label for="Wi-Fi" class="px-2">Wi-Fi</label></li>
+
+						</ul>
+					</div>
+					<button type="submit" class="button border border-dark w-100">Filter</button>
+				</form>
+
 			</div>
 			<div class="col-8 p-5 d-flex flex-column justify-content-center">
-				<!-- Room Type Filter Buttons -->
-
-
-				<div class="dropdown mb-3">
-					<button class="button dropdown-toggle" type="button"
-						data-bs-toggle="dropdown" aria-expanded="false">Filter by rooms </button>
-					<ul class="dropdown-menu">
-					 <li><a class="dropdown-item" href="#" onclick="filterRooms('all')">All</a></li>
-					 <li><a class="dropdown-item" href="#" onclick="filterRooms('standard')">Standard</a></li>
-					 <li><a class="dropdown-item" href="#" onclick="filterRooms('deluxe')">Deluxe</a></li>
-					 <li><a class="dropdown-item" href="#" onclick="filterRooms('luxury')">Luxury</a></li>
-					</ul>
-				</div>
-
-				<!-- <div class="mb-4">
-
-					<button class="btn btn-primary"">All</button>
-					<button class="btn btn-primary" onclick="filterRooms('standard')">Standard</button>
-					<button class="btn btn-primary" onclick="filterRooms('deluxe')">Deluxe</button>
-					<button class="btn btn-primary" onclick="filterRooms('luxury')">Luxury</button>
-				</div> -->
-
 				<div class="row justify-content-center" style="gap: 40px;">
-					<c:forEach var="room" items="${rooms}" varStatus="status">
-						<div class="card py-2 room-card ${room.roomType.toLowerCase()}"
-							style="width: 18rem;">
-							<div id="carouselExampleInterval${status.index}"
-								class="carousel slide" data-bs-ride="carousel">
-								<div class="carousel-inner">
-									<div class="carousel-item active" data-bs-interval="10000">
-										<img
-											src="https://rook.gumlet.io/uploads/center_caption_photo/photo/668f77bd293a360001dd602c/5___2024_07_11T114211.262.jpg?format=webp&h=auto&compress=true&ar=1.5"
-											class="card-img-top" alt="...">
-									</div>
-									<div class="carousel-item" data-bs-interval="2000">
-										<img
-											src="https://rook.gumlet.io/uploads/center_caption_photo/photo/62483333cc633b000198798c/04.jpg?format=webp&h=auto&compress=true&ar=1.5"
-											class="card-img-top" alt="...">
-									</div>
-									<div class="carousel-item">
-										<img
-											src="https://rook.gumlet.io/uploads/center/cover_photo/61767ed1c58e780001387fcb/9___2024_07_11T114106.961.jpg?format=webp&h=auto&compress=true&ar=1.5"
-											class="card-img-top" alt="...">
-									</div>
+					<div
+						class="container"
+						style="gap: 20px;">
+						<c:forEach var="location" items="${hostellist}">
+							<div class="card mb-2" style="width:18rem;">
+								<h5 class="card-header">${location.hostelName}</h5>
+								<div class="card-body">
+									<p class="card-text"><i class="fa-solid fa-location-dot px-3"></i>${location.hostelLocation}</p>
+									<p class="card-text"><i class="fa-solid fa-circle-info px-3"></i>${location.hostelAmenities}</p>
 								</div>
-								<button class="carousel-control-prev" type="button"
-									data-bs-target="#carouselExampleInterval${status.index}"
-									data-bs-slide="prev">
-									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									<span class="visually-hidden">Previous</span>
-								</button>
-								<button class="carousel-control-next" type="button"
-									data-bs-target="#carouselExampleInterval${status.index}"
-									data-bs-slide="next">
-									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="visually-hidden">Next</span>
-								</button>
+									<a
+										href="${pageContext.request.contextPath}/hostel/showhostelbyid/${location.hostelId}" style="margin:auto;"
+										class="button w-50 text-dark text-decoration-none my-2" id="${location.hostelId}">Show</a>
 							</div>
-							<div class="card-body">
-								<h5 class="card-title text-capitalize">${room.roomType}</h5>
-								<p class="card-text">
-									 &#8377;${room.price}<span class="text-grey"
-										style="font-size: 12px;"> /day<br /></span>
-								</p>
-								<p class="card-text">Room No. ${room.roomNumber} is located
-									on Floor No. ${room.roomFloorNumber}</p>
-								<c:choose>
-									<c:when test="${room.availability}">
-										<a
-											href="${pageContext.request.contextPath}/booking/showbookingform/${room.roomId}"
-											class="btn button w-100">Book now</a>
-									</c:when>
-									<c:otherwise>
-										<button class="btn button w-100" disabled>Unavailable</button>
-									</c:otherwise>
-								</c:choose>
-							</div>
-						</div>
-					</c:forEach>
+						</c:forEach>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -271,24 +237,6 @@
 			<p class="text-center text-grey mt-3">&copy;2024 Zyloz</p>
 		</div>
 	</footer>
-
-	<script>
-
-function filterRooms(type) {
-    let rooms = document.querySelectorAll('.room-card');
-    rooms.forEach(room => {
-        if (type === 'all') {
-            room.style.display = 'block';
-        } else {
-            if (room.classList.contains(type)) {
-                room.style.display = 'block';
-            } else {
-                room.style.display = 'none';
-            }
-        }
-    });
-}
-</script>
 
 
 	<script

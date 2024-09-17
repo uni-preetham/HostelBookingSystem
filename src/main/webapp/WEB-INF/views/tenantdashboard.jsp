@@ -193,10 +193,11 @@
 	<section class="mb-5 d-flex align-items-center" style="height: 16em;">
 		<div class="custom-container">
 			<h2 class="text-center fw-semibold text-grey my-5">
-				Find your <span style="color: #69A4DB;"> Zyloz </span>, in your city.
+				Find your <span style="color: #69A4DB;"> Zyloz</span>, in your city.
 			</h2>
+			<a href="${pageContext.request.contextPath}/hostel/filterhostels" class="text-dark d-block text-end">All hostels <i class="fa-solid fa-arrow-right"></i></a>
 			<div
-				class="locationCards custom-container align-items-center d-flex justify-content-center text-grey fw-semibold px-5 pb-2 mb-5"
+				class="locationCards custom-container align-items-center d-flex justify-content-center text-grey fw-semibold px-5 pb-2 m-3"
 				style="gap: 20px;">
 				<!-- overflow-x: scroll; -->
 				<!-- Loop through the hostel locations passed from the controller -->
@@ -215,7 +216,7 @@
 		</div>
 	</section>
 
-	<section class="mb-5 d-flex align-items-center" style="height: 16em;">
+	<section class="m-5 d-flex align-items-center" style="height: 16em;">
 		<div class="custom-container mb-5">
 			<h2 class="text-center fw-semibold text-grey my-5">
 				We are India's <span style="color: #69A4DB;"> most affordable

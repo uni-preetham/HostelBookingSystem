@@ -116,4 +116,14 @@ public class HostelController {
     public void deleteHostel(@PathVariable("hostelId") String hostelId) throws ResourceNotFoundException {
         hostelService.deleteHostel(hostelId);
     }
+    
+    @GetMapping("/filterhostels")
+    public String filterHostelsByAmenities(
+            @RequestParam(value = "amenities", required = false) List<String> amenities,
+            Model model) {
+        List<Hostel> filteredHostels = hostelService.getHostelsByAmenities(amenities);
+        model.addAttribute("hostellist", filteredHostels);
+        model.addAttribute("selectedAmenities", amenities);
+        return "hostelslist";  // Your JSP page that lists the hostels
+    }
 }

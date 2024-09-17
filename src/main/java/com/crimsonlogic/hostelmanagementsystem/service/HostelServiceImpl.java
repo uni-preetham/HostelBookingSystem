@@ -15,57 +15,68 @@ import com.crimsonlogic.hostelmanagementsystem.repository.HostelRepository;
 @Transactional
 public class HostelServiceImpl implements HostelService {
 
-    @Autowired
-    private HostelRepository hostelRepository;
+	@Autowired
+	private HostelRepository hostelRepository;
 
-    @Override
-    public Hostel addHostel(Hostel hostel) {
-        return hostelRepository.save(hostel);
-    }
+	@Override
+	public Hostel addHostel(Hostel hostel) {
+		return hostelRepository.save(hostel);
+	}
 
-    @Override
-    public List<Hostel> listAllHostels() {
-        return hostelRepository.findAll();
-    }
+	@Override
+	public List<Hostel> listAllHostels() {
+		return hostelRepository.findAll();
+	}
 
-    @Override
-    public Hostel showHostelById(String hostelId) throws ResourceNotFoundException {
-        return hostelRepository.findById(hostelId).get();
-    }
+	@Override
+	public Hostel showHostelById(String hostelId) throws ResourceNotFoundException {
+		return hostelRepository.findById(hostelId).get();
+	}
 
-    @Override
-    public void updateHostel(String hostelId, Hostel hostelDetails) throws ResourceNotFoundException {
-        Hostel existingHostel = showHostelById(hostelId);
-        if (existingHostel != null) {
-            existingHostel.setHostelName(hostelDetails.getHostelName());
-            existingHostel.setHostelLocation(hostelDetails.getHostelLocation());
-            existingHostel.setHostelDescription(hostelDetails.getHostelDescription());
-            existingHostel.setHostelAmenities(hostelDetails.getHostelAmenities());
-            hostelRepository.save(existingHostel);
-        } else {
-            throw new ResourceNotFoundException("Hostel not found with ID: " + hostelId);
-        }
-    }
+	@Override
+	public void updateHostel(String hostelId, Hostel hostelDetails) throws ResourceNotFoundException {
+		Hostel existingHostel = showHostelById(hostelId);
+		if (existingHostel != null) {
+			existingHostel.setHostelName(hostelDetails.getHostelName());
+			existingHostel.setHostelLocation(hostelDetails.getHostelLocation());
+			existingHostel.setHostelDescription(hostelDetails.getHostelDescription());
+			existingHostel.setHostelAmenities(hostelDetails.getHostelAmenities());
+			hostelRepository.save(existingHostel);
+		} else {
+			throw new ResourceNotFoundException("Hostel not found with ID: " + hostelId);
+		}
+	}
 
-    @Override
-    public void deleteHostel(String hostelId) throws ResourceNotFoundException {
-        Hostel hostel = showHostelById(hostelId);
-        if (hostel != null) {
-            hostelRepository.deleteById(hostelId);
-        } else {
-            throw new ResourceNotFoundException("Hostel not found with ID: " + hostelId);
-        }
-    }
-    
-    public List<Hostel> searchHostelsByLocation(String location) {
-        return hostelRepository.findByHostelLocationContainingIgnoreCase(location);
-    }
+	@Override
+	public void deleteHostel(String hostelId) throws ResourceNotFoundException {
+		Hostel hostel = showHostelById(hostelId);
+		if (hostel != null) {
+			hostelRepository.deleteById(hostelId);
+		} else {
+			throw new ResourceNotFoundException("Hostel not found with ID: " + hostelId);
+		}
+	}
 
-    
-    @Override
-    public Hostel getHostelById(String hostelId) throws ResourceNotFoundException {
-        return hostelRepository.findById(hostelId)
-                               .orElseThrow(() -> new ResourceNotFoundException("Hostel not found"));
-    }
+	public List<Hostel> searchHostelsByLocation(String location) {
+		return hostelRepository.findByHostelLocationContainingIgnoreCase(location);
+	}
 
+	@Override
+	public Hostel getHostelById(String hostelId) throws ResourceNotFoundException {
+		return hostelRepository.findById(hostelId).orElseThrow(() -> new ResourceNotFoundException("Hostel not found"));
+	}
+
+	@Override
+	public List<Hostel> getHostelsByAmenities(List<String> amenities) {
+		if (amenities == null || amenities.isEmpty()) {
+			return listAllHostels();
+		}
+		// Start with the first amenity and filter through the rest
+		List<Hostel> filteredHostels = hostelRepository.findByHostelAmenitiesContaining(amenities.get(0));
+		for (int i = 1; i < amenities.size(); i++) {
+			List<Hostel> filteredByCurrentAmenity = hostelRepository.findByHostelAmenitiesContaining(amenities.get(i));
+			filteredHostels.retainAll(filteredByCurrentAmenity);
+		}
+		return filteredHostels;
+	}
 }
