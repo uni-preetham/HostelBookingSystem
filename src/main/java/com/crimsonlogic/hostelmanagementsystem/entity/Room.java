@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -11,6 +13,8 @@ import javax.persistence.*;
 public class Room {
     @Id
     @Column(name = "room_id")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "custom-id-generator")
+	@GenericGenerator(name = "custom-id-generator", strategy = "com.crimsonlogic.hostelmanagementsystem.util.RoomIdGenerator")
     private String roomId;
 
     @Column(name = "room_number")
@@ -20,7 +24,7 @@ public class Room {
     private Integer roomFloorNumber;
 
     @Column(name = "room_type")
-    private String roomType;  // Should be 'single', 'double', or 'shared'
+    private String roomType;
 
     @Column(name = "price")
     private Double price;

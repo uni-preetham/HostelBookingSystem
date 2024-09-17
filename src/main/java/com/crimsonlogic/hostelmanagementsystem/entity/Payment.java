@@ -3,7 +3,10 @@ package com.crimsonlogic.hostelmanagementsystem.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -12,13 +15,15 @@ import java.sql.Timestamp;
 public class Payment {
     @Id
     @Column(name = "payment_id")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "custom-id-generator")
+   	@GenericGenerator(name = "custom-id-generator", strategy = "com.crimsonlogic.hostelmanagementsystem.util.PaymentIdGenerator")
     private String paymentId;
 
     @Column(name = "amount")
     private Double amount;
 
     @Column(name = "payment_date")
-    private Timestamp paymentDate;
+    private Date paymentDate;
 
     @Column(name = "payment_method")
     private String paymentMethod;  // Should be 'credit_card', 'debit_card', 'net_banking', 'UPI'

@@ -56,4 +56,16 @@ public class RoomServiceImpl implements RoomService {
             throw new ResourceNotFoundException("Room not found");
         }
     }
+    
+    @Override
+    public List<Room> getRoomsByHostel(String hostelId) {
+        return roomRepository.findByHostel_HostelId(hostelId);  // Custom query to find rooms by hostel
+    }
+    
+ // Find rooms by hostel ID
+    @Override
+    public List<Room> findRoomsByHostelId(String hostelId) {
+        return roomRepository.findByHostelHostelId(hostelId);
+    }
+
 }

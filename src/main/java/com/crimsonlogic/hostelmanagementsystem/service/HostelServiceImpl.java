@@ -56,4 +56,16 @@ public class HostelServiceImpl implements HostelService {
             throw new ResourceNotFoundException("Hostel not found with ID: " + hostelId);
         }
     }
+    
+    public List<Hostel> searchHostelsByLocation(String location) {
+        return hostelRepository.findByHostelLocationContainingIgnoreCase(location);
+    }
+
+    
+    @Override
+    public Hostel getHostelById(String hostelId) throws ResourceNotFoundException {
+        return hostelRepository.findById(hostelId)
+                               .orElseThrow(() -> new ResourceNotFoundException("Hostel not found"));
+    }
+
 }

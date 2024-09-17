@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Tenant Registration</title>
+<title>Zyloz | Tenant Registration</title>
 <!-- Bootstrap CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -98,7 +98,7 @@
 					</div>
 					<div
 						class="col border fw-semibold border-2 border-white  rounded mx-1 py-3">
-						App Based<br />Search
+						Safe and<br />Secure
 					</div>
 				</div>
 				<div class="row text-center">
@@ -108,7 +108,7 @@
 					</div>
 					<div
 						class="col border fw-semibold border-2 border-white rounded mx-1 py-3">
-						One Month<br />Deposit
+						No<br />Deposit
 					</div>
 				</div>
 

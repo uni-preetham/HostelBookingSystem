@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.crimsonlogic.hostelmanagementsystem.entity.Tenant;
@@ -67,17 +65,38 @@ public class TenantController {
     public void deleteCustomer(@PathVariable("tenantId") String tenantId) {
         tenantService.deleteTenant(tenantId);
     }
-
-    @PutMapping("/updatemapping/{tenantId}")
-    public void updateTenant(@PathVariable("tenantId") String tenantId, @RequestBody Tenant tenant)
-            throws ResourceNotFoundException {
-        tenantService.updateTenant(tenantId, tenant);
+    
+    @GetMapping("/edituserform/{tenantId}")
+    public String showEditUserForm(@PathVariable("tenantId") String tenantId, Model model) {
+        Tenant tenantDetails = tenantService.showTenantById(tenantId);
+        if (tenantDetails != null) {
+            model.addAttribute("tenant", tenantDetails); // Add tenant details to the model
+            return "edittenant";
+        }
+        return "redirect:/tenant/listalltenant"; // Redirect if tenant not found
     }
+
+    @PostMapping("/updatetenant")
+    public String updateTenant(@ModelAttribute Tenant tenant, Model model, HttpSession session)
+            throws ResourceNotFoundException {
+        if (tenant != null && tenant.getTenantId() != null) {
+            tenantService.updateTenant(tenant.getTenantId(), tenant);
+//            Tenant updatedTenant = tenantService.findByEmailAndPassword(tenant.getTenantEmail(), tenant.getTenantPassword());
+            Tenant updatedTenant = tenantService.showTenantById(tenant.getTenantId());
+            System.out.println(updatedTenant);
+            session.setAttribute("user", updatedTenant);
+            model.addAttribute("message", "User details updated successfully.");
+            return "tenantdashboard"; // Redirect to the dashboard after update
+            
+        }
+        return "redirect:/tenant/listalltenant"; // Redirect if tenant ID is missing
+    }
+
 
     // Show login form
     @GetMapping("/loginform")
     public String showLoginForm(Model model) {
-//    	LOG.debug("inside showLoginForm handler method");
+    	LOG.debug("inside showLoginForm handler method");
         model.addAttribute("tenant", new Tenant());  // Bind an empty tenant object for form
         return "login";  // Return the login JSP page
     }
@@ -88,15 +107,16 @@ public class TenantController {
 
     	LOG.debug("inside loginTenant handler method");
         Tenant existingTenant = tenantService.findByEmailAndPassword(tenant.getTenantEmail(), tenant.getTenantPassword());
+        System.out.println(existingTenant);
         
         if (existingTenant != null) {
             if (existingTenant.getIsAdmin()) {
                 // Redirect to admin dashboard if user is an admin
-            	session.setAttribute("user_fname", existingTenant.getTenantFname());
-                return "redirect:/admin/dashboard";
+            	session.setAttribute("user", existingTenant);
+                return "redirect:/manager/dashboard";
             } else {
                 // Redirect to tenant dashboard if user is not an admin
-            	session.setAttribute("user_fname", existingTenant.getTenantFname());
+            	session.setAttribute("user", existingTenant);
                 return "redirect:/tenant/dashboard";
             }
         } else {
@@ -114,9 +134,9 @@ public class TenantController {
     }
 
     // Admin dashboard (for admins)
-    @GetMapping("/admin/dashboard")
+    @GetMapping("/manager/dashboard")
     public String showAdminDashboard() {
-        return "admindashboard";  // Return the admin dashboard JSP page
+        return "managerdashboard";  // Return the admin dashboard JSP page
     }
     
     //Logout (invalidating the session)

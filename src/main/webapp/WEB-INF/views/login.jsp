@@ -100,7 +100,7 @@
 					</div>
 					<div
 						class="col border fw-semibold border-2 border-white  rounded mx-1 py-3">
-						App Based<br />Search
+						Safe and<br />Secure
 					</div>
 				</div>
 				<div class="row text-center">
@@ -110,7 +110,7 @@
 					</div>
 					<div
 						class="col border fw-semibold border-2 border-white rounded mx-1 py-3">
-						One Month<br />Deposit
+						No<br />Deposit
 					</div>
 				</div>
 

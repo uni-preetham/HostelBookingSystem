@@ -8,8 +8,8 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
  
 public class TenantIdGenerator implements IdentifierGenerator {
-	private static final int MIN_ID = 1000; 
-	private static final int MAX_ID = 9999; 
+	private static final int MIN_ID = 10000; 
+	private static final int MAX_ID = 99999; 
 	private Random random = new Random();
  
 	@Override

@@ -1,6 +1,8 @@
 package com.crimsonlogic.hostelmanagementsystem.service;
 
+import java.util.Base64;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
@@ -18,16 +20,12 @@ public class TenantServiceImpl implements TenantService {
 
 	@Autowired
 	private TenantRepository tenantRepository;
-	
 
 	@Override
 	public Tenant registerTenant(Tenant tenant) {
-		// Encrypt the password before saving
-		/*
-		 * String encodedPassword = passwordEncoder.encode(tenant.getTenantPassword());
-		 * tenant.setTenantPassword(encodedPassword);
-		 */
-        // Save the tenant to the database
+	    String tenantPassword = tenant.getTenantPassword();
+	    String encryptedPassword = Base64.getEncoder().encodeToString(tenantPassword.getBytes());
+	    tenant.setTenantPassword(encryptedPassword);
 		return tenantRepository.save(tenant);
 	}
 
@@ -36,9 +34,11 @@ public class TenantServiceImpl implements TenantService {
 		return tenantRepository.findAll();
 	}
 
+
 	@Override
 	public Tenant showTenantById(String tenantId) {
-		return tenantRepository.findById(tenantId).get();
+		return tenantRepository.findById(tenantId)
+				.orElseThrow(() -> new NoSuchElementException("Tenant with tenantId " + tenantId + " not found"));
 	}
 
 	@Override
@@ -66,17 +66,17 @@ public class TenantServiceImpl implements TenantService {
 	
 	@Override
 	public Tenant findByEmailAndPassword(String email, String password) {
-		return tenantRepository.findByTenantEmailAndTenantPassword(email, password);
-		/*
-		 * Tenant tenant = tenantRepository.findByTenantEmail(email);
-		 * 
-		 * // Check if tenant exists and if the raw password matches the encoded
-		 * password if (tenant != null && passwordEncoder.matches(password,
-		 * tenant.getTenantPassword())) { return tenant; // Return tenant if the
-		 * password matches }
-		 */
-		    
-//		    return tenant;  // Return null if credentials are invalid
+	    Tenant tenant = tenantRepository.findByTenantEmail(email);
+	    if (tenant != null) {
+	        String encodedPassword = tenant.getTenantPassword();
+	        byte[] decodedBytes = Base64.getDecoder().decode(encodedPassword);
+	        String decodedPassword = new String(decodedBytes);
+	        if (decodedPassword.equals(password)) {
+	            return tenant;
+	        }
+	    }
+	    
+	    return null;
 	}
 
 }
