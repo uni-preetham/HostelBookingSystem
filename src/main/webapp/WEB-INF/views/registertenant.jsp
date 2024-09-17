@@ -54,8 +54,8 @@
 }
 </style>
 </head>
-<body style="overflow-x:hidden;">
-<%-- 
+<body style="overflow-x: hidden;">
+	<%-- 
 	<!-- Display error message if present -->
 	<c:if test="${not empty error}">
 		<div class="bg-danger text-white font-weight-bold py-2 text-center"
@@ -124,18 +124,20 @@
 
 							<!-- First Name Field -->
 							<div class="form-group form-floating mb-2">
-								 <input type="text"
-									id="tenantFname" name="tenantFname" class="form-control"
-									required minlength="3" maxlength="50" placeholder=""><label for="tenantFname">First Name</label>
+								<input type="text" id="tenantFname" name="tenantFname"
+									class="form-control" required minlength="3" maxlength="50"
+									placeholder=""><label for="tenantFname">First
+									Name</label>
 								<div class="invalid-feedback">Name is required and should
 									be between 3 to 50 characters.</div>
 							</div>
 
 							<!-- Last Name Field -->
 							<div class="form-group form-floating mb-2">
-								 <input type="text"
-									id="tenantLname" name="tenantLname" class="form-control" required
-									minlength="1" maxlength="50" placeholder=""><label for="tenantLname">Last Name</label>
+								<input type="text" id="tenantLname" name="tenantLname"
+									class="form-control" required minlength="1" maxlength="50"
+									placeholder=""><label for="tenantLname">Last
+									Name</label>
 
 							</div>
 
@@ -150,34 +152,56 @@
 							</div> -->
 
 							<!-- Email Field -->
-							<div class="form-group form-floating mb-2">
+							<!-- <div class="form-group form-floating mb-2">
 								<input type="email"
 									id="tenantEmail" name="tenantEmail" class="form-control"
 									required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com)$" placeholder=""><label for="tenantEmail">Email</label> 
 								<div class="invalid-feedback">Please enter a valid email
 									address in the format example@domain.com.</div>
+							</div> -->
+
+
+							<!-- Email Field -->
+							<div class="form-group form-floating mb-2">
+								<input type="email" id="tenantEmail" name="tenantEmail"
+									class="form-control" required
+									pattern="^[a-zA-Z0-9._%+-]{1,50}@[a-zA-Z0-9.-]{1,20}\.com$"
+									placeholder=""> <label for="tenantEmail">Email</label>
+								<div class="invalid-feedback">Please enter a valid email
+									address in the format example@domain.com with specific length
+									constraints.</div>
 							</div>
+
 
 							<!-- Phone Field -->
 							<div class="form-group form-floating mb-2">
-								<input type="text"
-									id="tenantPhone" name="tenantPhone" class="form-control"
-									required pattern="^[6-9]\d{9}$" placeholder=""><label for="tenantPhone">Phone</label> 
+								<input type="text" id="tenantPhone" name="tenantPhone"
+									class="form-control" required pattern="^[6-9]\d{9}$"
+									placeholder=""><label for="tenantPhone">Phone</label>
 								<div class="invalid-feedback">Please enter a valid
 									10-digit phone number starting with 6, 7, 8, or 9.</div>
 							</div>
 
 							<!-- Password Field -->
 							<div class="form-group form-floating mb-2">
-								 <input
-									type="password" id="tenantPassword" name="tenantPassword"
-									class="form-control" required minlength="8" placeholder=""><label for="tenantPassword">Password</label>
-								<div class="invalid-feedback">Password must be at least 8
-									characters long.</div>
+								<input type="password" id="tenantPassword" name="tenantPassword"
+									class="form-control" required minlength="8"
+									pattern="(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+									placeholder=""><label for="tenantPassword">Password</label>
+								<div class="invalid-feedback">Password must be at least 8 characters long, include at least one uppercase letter, one number, and one special character.</div>
+							</div>
+
+							<!-- Confirm Password Field -->
+							<div class="form-group form-floating mb-2">
+								<input type="password" id="confirmPassword"
+									name="confirmPassword" class="form-control" required
+									minlength="8" placeholder=""> <label
+									for="confirmPassword">Confirm Password</label>
+								<div class="invalid-feedback">Passwords do not match.</div>
 							</div>
 
 							<!-- Submit Button -->
-								<button type="submit" class="button w-100 btn-block my-3">Register</button>
+							<button type="submit" class="button w-100 btn-block my-3">Register</button>
 						</form>
 					</div>
 				</div>
@@ -192,37 +216,54 @@
 
 	<!-- Client-side validation script -->
 	<script>
-		// Enable real-time validation
 		(function() {
 			'use strict';
 			var form = document.getElementById('registrationForm');
-			var inputs = form.querySelectorAll('input');
+			var passwordField = document.getElementById('tenantPassword');
+			var confirmPasswordField = document
+					.getElementById('confirmPassword');
 
-			inputs.forEach(function(input) {
-				input.addEventListener('input', function(event) {
-					var field = event.target;
-					if (field.checkValidity()) {
-						field.classList.remove('is-invalid');
-						field.classList.add('is-valid');
-					} else {
-						field.classList.remove('is-valid');
-						field.classList.add('is-invalid');
-					}
-				});
-			});
+			// Function to validate password match
+			function validatePassword() {
+				if (passwordField.value === confirmPasswordField.value) {
+					confirmPasswordField.classList.remove('is-invalid');
+					confirmPasswordField.classList.add('is-valid');
+				} else {
+					confirmPasswordField.classList.remove('is-valid');
+					confirmPasswordField.classList.add('is-invalid');
+				}
+			}
+
+			// Enable real-time validation for all inputs
+			form.querySelectorAll('input').forEach(
+					function(input) {
+						input.addEventListener('input', function(event) {
+							var field = event.target;
+							if (field.checkValidity()) {
+								field.classList.remove('is-invalid');
+								field.classList.add('is-valid');
+								if (field === passwordField
+										|| field === confirmPasswordField) {
+									validatePassword();
+								}
+							} else {
+								field.classList.remove('is-valid');
+								field.classList.add('is-invalid');
+							}
+						});
+					});
 
 			form.addEventListener('submit', function(event) {
-				if (form.checkValidity() === false) {
+				if (form.checkValidity() === false
+						|| passwordField.value !== confirmPasswordField.value) {
 					event.preventDefault();
 					event.stopPropagation();
+					validatePassword(); // Check final validation on submit
 				}
 				form.classList.add('was-validated');
 			}, false);
 		})();
-
-		const passwordField = document.getElementById('password');
-		const togglePasswordBtn = document.getElementById('button-addon2');
-
 	</script>
+
 </body>
 </html>

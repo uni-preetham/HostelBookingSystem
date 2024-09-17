@@ -11,6 +11,6 @@ public interface HostelService {
     public Hostel showHostelById(String hostelId) throws ResourceNotFoundException;
     public void updateHostel(String hostelId, Hostel hostel) throws ResourceNotFoundException;
     public void deleteHostel(String hostelId) throws ResourceNotFoundException;
-	Hostel getHostelById(String hostelId) throws ResourceNotFoundException;
+	public Hostel getHostelById(String hostelId) throws ResourceNotFoundException;
 	public List<Hostel> searchHostelsByLocation(String location);
 }

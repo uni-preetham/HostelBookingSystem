@@ -25,6 +25,7 @@ public class TenantServiceImpl implements TenantService {
 	public Tenant registerTenant(Tenant tenant) {
 	    String tenantPassword = tenant.getTenantPassword();
 	    String encryptedPassword = Base64.getEncoder().encodeToString(tenantPassword.getBytes());
+	    System.out.print("\n\n\n\n\n\n\n\n\n"+encryptedPassword+"\n\n\n\n\n\n\n\n\n");
 	    tenant.setTenantPassword(encryptedPassword);
 		return tenantRepository.save(tenant);
 	}
@@ -71,6 +72,7 @@ public class TenantServiceImpl implements TenantService {
 	        String encodedPassword = tenant.getTenantPassword();
 	        byte[] decodedBytes = Base64.getDecoder().decode(encodedPassword);
 	        String decodedPassword = new String(decodedBytes);
+	        System.out.print("\n\n\n\n\n\n\n\n\n"+decodedPassword+"\n\n\n\n\n\n\n\n\n");
 	        if (decodedPassword.equals(password)) {
 	            return tenant;
 	        }

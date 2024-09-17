@@ -6,6 +6,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -19,6 +20,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URL;
 
 @Service
 @Transactional
@@ -38,6 +40,21 @@ public class InvoiceServiceImpl implements InvoiceService {
         // Open the document for writing
         document.open();
 
+     // Add image at the top
+        try {
+        	URL url = new URL("https://raw.githubusercontent.com/uni-preetham/Test/master/Group%201.png"); 
+            Image img = Image.getInstance(url); // Update with your image path
+            img.setAlignment(Element.ALIGN_LEFT);
+            img.scaleToFit(100f, 100f); // Adjust size as needed
+            document.add(img);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+
+        
+        
         // Set fonts
         Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
         Font regularFont = new Font(Font.FontFamily.HELVETICA, 12);

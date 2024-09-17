@@ -283,11 +283,11 @@
 								Policy</a></li>
 					</ul>
 					<ul class="list-unstyled">
-						<li class="my-3"><a href="#" class="nav-link"><i
+						<li class="my-3"><a href="http://www.instagram.com" class="nav-link"><i
 								class="fa-brands fa-instagram mx-2"></i>Instagram</a></li>
-						<li class="my-3"><a href="#" class="nav-link"><i
+						<li class="my-3"><a href="http://www.facebook.com" class="nav-link"><i
 								class="fa-brands fa-facebook mx-2"></i></i>Facebook</a></li>
-						<li class="my-3"><a href="#" class="nav-link"><i
+						<li class="my-3"><a href="http://www.x.com" class="nav-link"><i
 								class="fa-brands fa-x-twitter mx-2"></i></i>Twitter</a></li>
 						<li class="my-3"><a href="#" class="nav-link"><i
 								class="fa-solid fa-phone mx-2"></i></i></i>Phone</a></li>

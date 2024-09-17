@@ -149,10 +149,10 @@
 			class="custom-container text-grey my-5 rounded container hero d-flex align-items-center justify-content-center text-center">
 			<div style="height: 50vh;">
 				<h5 class="my-5">Payment made successfully!</h5>
-				<div class="countdown mb-5" id="countdown"></div>
 				<a
 					href="${pageContext.request.contextPath}/payment/downloadInvoice?bookingId=${bookingId}"
 					class="btn btn-primary"> Download Invoice </a>
+				<div class="countdown my-5" id="countdown"></div>
 			</div>
 		</div>
 	</section>
