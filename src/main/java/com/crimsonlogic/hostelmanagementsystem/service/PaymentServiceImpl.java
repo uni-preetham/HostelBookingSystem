@@ -53,4 +53,15 @@ public class PaymentServiceImpl implements PaymentService {
             throw new ResourceNotFoundException("Payment not found with ID: " + paymentId);
         }
     }
+    
+    @Override
+    public Payment findPaymentByBookingId(String bookingId) throws ResourceNotFoundException {
+        Payment payment = paymentRepository.findByBookingBookingId(bookingId);
+        
+        if (payment == null) {
+            throw new ResourceNotFoundException("Payment not found for booking ID: " + bookingId);
+        }
+        
+        return payment;
+    }
 }

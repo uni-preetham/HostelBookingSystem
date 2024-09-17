@@ -11,4 +11,5 @@ public interface PaymentService {
     Payment showPaymentById(String paymentId) throws ResourceNotFoundException;
     void updatePayment(String paymentId, Payment payment) throws ResourceNotFoundException;
     void deletePayment(String paymentId) throws ResourceNotFoundException;
+	Payment findPaymentByBookingId(String bookingId) throws ResourceNotFoundException;
 }

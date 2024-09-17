@@ -26,7 +26,7 @@ import com.crimsonlogic.hostelmanagementsystem.service.RoomService;
 @Controller
 @RequestMapping("/hostel")
 public class HostelController {
-	private static final Logger LOG = LoggerFactory.getLogger(TenantController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(HostelController.class);
 	
     @Autowired
     private HostelService hostelService;

@@ -27,6 +27,7 @@ public class FeedbackController {
 
 	@GetMapping("/showfeedbackform")
 	public String showFeedbackForm(Model model) {
+		LOG.debug("inside showFeedbackForm handler method");
 		model.addAttribute("feedback", new Feedback());
 		return "feedbackform";
 	}
@@ -34,6 +35,7 @@ public class FeedbackController {
 	@PostMapping("/submit")
 	public String submitFeedback(@RequestParam("tenantId") String tenantId,
 			@RequestParam("description") String description, Model model) {
+		LOG.debug("inside submitFeedback handler method");
 		feedbackService.submitFeedback(tenantId, description);
 		model.addAttribute("message", "Feedback sent successfully");
 		return "tenantdashboard";

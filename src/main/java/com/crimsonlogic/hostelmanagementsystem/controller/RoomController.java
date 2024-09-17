@@ -2,6 +2,8 @@ package com.crimsonlogic.hostelmanagementsystem.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,8 @@ import com.crimsonlogic.hostelmanagementsystem.service.RoomService;
 @RequestMapping("/room")
 public class RoomController {
 
+	private static final Logger LOG = LoggerFactory.getLogger(RoomController.class);
+	
 	@Autowired
 	private RoomService roomService;
 
@@ -32,6 +36,8 @@ public class RoomController {
 
 	@GetMapping("/showroomform")
 	public String showRoomForm(Model model) {
+		
+		LOG.debug("inside showRoomForm handler method");
 		// Assuming you have a HostelService to get all hostels
 		List<Hostel> hostels = hostelService.listAllHostels();
 		model.addAttribute("hostels", hostels);
@@ -44,7 +50,7 @@ public class RoomController {
 			@RequestParam("roomFloorNumber") Integer roomFloorNumber, @RequestParam("roomType") String roomType,
 			@RequestParam("price") Double price, @RequestParam(value = "availability", required = false) Boolean availability,
 			@RequestParam("hostelId") String hostelId, Model model) throws ResourceNotFoundException {
-		
+		LOG.debug("inside createRoom handler method");
 		
 		// Default value if availability is not provided
 	    if (availability == null) {

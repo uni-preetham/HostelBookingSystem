@@ -7,5 +7,6 @@ import com.crimsonlogic.hostelmanagementsystem.entity.Payment;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, String>{
-
+	// Method to find payment by booking
+    Payment findByBookingBookingId(String bookingId);
 }

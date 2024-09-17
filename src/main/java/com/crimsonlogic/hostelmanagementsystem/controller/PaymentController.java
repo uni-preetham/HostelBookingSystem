@@ -1,8 +1,13 @@
 package com.crimsonlogic.hostelmanagementsystem.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +25,17 @@ import com.crimsonlogic.hostelmanagementsystem.entity.Payment;
 import com.crimsonlogic.hostelmanagementsystem.entity.Room;
 import com.crimsonlogic.hostelmanagementsystem.exception.ResourceNotFoundException;
 import com.crimsonlogic.hostelmanagementsystem.service.BookingService;
+import com.crimsonlogic.hostelmanagementsystem.service.InvoiceService;
 import com.crimsonlogic.hostelmanagementsystem.service.PaymentService;
 import com.crimsonlogic.hostelmanagementsystem.service.RoomService;
+import com.itextpdf.text.DocumentException;
 
 @Controller
 @RequestMapping("/payment")
 public class PaymentController {
 
+	private static final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
+	
     @Autowired
     private PaymentService paymentService;
     
@@ -35,9 +44,13 @@ public class PaymentController {
     
 	@Autowired
     private RoomService roomService;
+	
+	@Autowired
+	private InvoiceService invoiceService;
     
     @GetMapping("/showpaymentform")
     public String showPaymentForm(@RequestParam("bookingId") String bookingId, Model model) {
+    	LOG.debug("inside confirmBooking handler method");
 		Booking booking = bookingService.showBookingById(bookingId); // Fetch booking details
         model.addAttribute("booking", booking);
         return "paymentpage"; // JSP page to display payment form
@@ -81,6 +94,7 @@ public class PaymentController {
             }
 
             // Redirect to a confirmation page or dashboard
+            model.addAttribute("bookingId", bookingId);
             return "paymentcompleted";
         } else {
             // Handle payment failure
@@ -88,6 +102,34 @@ public class PaymentController {
             return "paymentform"; // Return to payment form with an error
         }
     }
+    
+    
+    @GetMapping("/downloadInvoice")
+    public void downloadInvoice(
+            @RequestParam("bookingId") String bookingId,
+            HttpServletResponse response) throws ResourceNotFoundException, DocumentException, IOException {
+
+        // Retrieve the booking
+        Booking booking = bookingService.showBookingById(bookingId);
+        if (booking != null) {
+            // Retrieve the payment related to the booking
+            Payment payment = paymentService.findPaymentByBookingId(bookingId);
+            if (payment != null) {
+                // Set the content type to application/pdf
+                response.setContentType("application/pdf");
+                // Set content disposition to force a download
+                response.setHeader("Content-Disposition", "attachment; filename=invoice_" + bookingId + ".pdf");
+
+                // Generate and write the invoice to the response output stream
+                invoiceService.generateInvoice(response, booking, payment);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Payment not found for the booking.");
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Booking not found.");
+        }
+    }
+
 
    
 

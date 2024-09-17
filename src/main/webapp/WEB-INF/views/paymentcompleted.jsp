@@ -113,11 +113,10 @@
 					<div class="navbar-nav">
 						<a class="nav-item nav-link text-grey"
 							href="${pageContext.request.contextPath}/manager/dashboard">Home</a>
-						
+
 						<a class="nav-item nav-link text-grey"
 							href="${pageContext.request.contextPath}/booking/viewbooking/${sessionScope.user.tenantId}">View
-							bookings</a>
-						<a class="nav-item nav-link text-grey"
+							bookings</a> <a class="nav-item nav-link text-grey"
 							href="${pageContext.request.contextPath}/feedback/showfeedbackform">Feedback</a>
 					</div>
 				</div>
@@ -145,13 +144,17 @@
 	<!-- --------------------BODY-------------------- -->
 
 	<section>
-		
-				<div class="custom-container text-grey my-5 rounded container hero d-flex align-items-center justify-content-center text-center">
-					<div style="height: 50vh;">
-					<h5 class="my-5">Payment made successfully!</h5>
-					<div class="countdown mb-5" id="countdown"></div>
-					</div>
-				</div>
+
+		<div
+			class="custom-container text-grey my-5 rounded container hero d-flex align-items-center justify-content-center text-center">
+			<div style="height: 50vh;">
+				<h5 class="my-5">Payment made successfully!</h5>
+				<div class="countdown mb-5" id="countdown"></div>
+				<a
+					href="${pageContext.request.contextPath}/payment/downloadInvoice?bookingId=${bookingId}"
+					class="btn btn-primary"> Download Invoice </a>
+			</div>
+		</div>
 	</section>
 
 
@@ -214,5 +217,17 @@
 			<p class="text-center text-grey mt-3">&copy;2024 Zyloz</p>
 		</div>
 	</footer>
+	
+	<script>
+    document.getElementById('downloadInvoiceBtn').addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent default behavior
+
+        // Create a hidden iframe to trigger download
+        var iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = this.href; // The URL for the download
+        document.body.appendChild(iframe);
+    });
+</script>
 </body>
 </html>
