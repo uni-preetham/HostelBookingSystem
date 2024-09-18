@@ -14,15 +14,20 @@ public class FeedbackServiceImpl implements FeedbackService{
     @Autowired
     private FeedbackRepository feedbackRepository;
 
+    //Show all feedback
     public List<Feedback> getAllFeedback() {
         return feedbackRepository.findAll();
     }
 
+    
+    //Submit feedback
     public Feedback submitFeedback(String tenantId, String description) {
         Feedback feedback = new Feedback(tenantId, description);
         return feedbackRepository.save(feedback);
     }
 
+    
+    //Update feedback status
     public void updateFeedbackStatus(String feedbackId, String status) {
         Feedback feedback= feedbackRepository.findById(feedbackId).get();
         feedback.setFeedbackStatus(status);

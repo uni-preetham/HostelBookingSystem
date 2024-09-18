@@ -161,12 +161,8 @@
 										placeholder="" required> <label for="tenantPhone">Phone</label>
 								</div>
 
-								<div class="form-group form-floating">
-									<input type="password" id="tenantPassword"
-										name="tenantPassword" class="form-control"
-										value="${tenant.tenantPassword}" placeholder="" required>
-									<label for="tenantPassword">Password</label>
-								</div>
+								<a href="${pageContext.request.contextPath}/tenant/updatepasswordform/${tenant.tenantId}" class="text-dark" style="font-size: 12px;">Update password</a>
+								
 
 								<button type="submit" class="button w-100 btn-block my-2">Update</button>
 								<a href="${pageContext.request.contextPath}/tenant/dashboard"

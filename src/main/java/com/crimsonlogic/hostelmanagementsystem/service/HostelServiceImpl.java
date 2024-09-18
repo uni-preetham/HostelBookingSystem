@@ -18,21 +18,29 @@ public class HostelServiceImpl implements HostelService {
 	@Autowired
 	private HostelRepository hostelRepository;
 
+	
+	//Add a hostel
 	@Override
 	public Hostel addHostel(Hostel hostel) {
 		return hostelRepository.save(hostel);
 	}
 
+	
+	//Show all hostels
 	@Override
 	public List<Hostel> listAllHostels() {
 		return hostelRepository.findAll();
 	}
 
+	
+	//Show hostel by hostel id
 	@Override
 	public Hostel showHostelById(String hostelId) throws ResourceNotFoundException {
 		return hostelRepository.findById(hostelId).get();
 	}
 
+	
+	//update hostel by hostel id
 	@Override
 	public void updateHostel(String hostelId, Hostel hostelDetails) throws ResourceNotFoundException {
 		Hostel existingHostel = showHostelById(hostelId);
@@ -47,6 +55,8 @@ public class HostelServiceImpl implements HostelService {
 		}
 	}
 
+	
+	//delete hostel by hostel id
 	@Override
 	public void deleteHostel(String hostelId) throws ResourceNotFoundException {
 		Hostel hostel = showHostelById(hostelId);
@@ -57,15 +67,21 @@ public class HostelServiceImpl implements HostelService {
 		}
 	}
 
+	
+	//Search for hostels by location
 	public List<Hostel> searchHostelsByLocation(String location) {
 		return hostelRepository.findByHostelLocationContainingIgnoreCase(location);
 	}
 
+	
+	//Fetch a hostel by hostel Id
 	@Override
 	public Hostel getHostelById(String hostelId) throws ResourceNotFoundException {
 		return hostelRepository.findById(hostelId).orElseThrow(() -> new ResourceNotFoundException("Hostel not found"));
 	}
 
+	
+	//Fetch hostels by amenities
 	@Override
 	public List<Hostel> getHostelsByAmenities(List<String> amenities) {
 		if (amenities == null || amenities.isEmpty()) {

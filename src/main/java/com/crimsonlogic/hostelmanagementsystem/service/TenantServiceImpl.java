@@ -21,6 +21,8 @@ public class TenantServiceImpl implements TenantService {
 	@Autowired
 	private TenantRepository tenantRepository;
 
+	
+	//Register tenant
 	@Override
 	public Tenant registerTenant(Tenant tenant) {
 	    String tenantPassword = tenant.getTenantPassword();
@@ -30,24 +32,31 @@ public class TenantServiceImpl implements TenantService {
 		return tenantRepository.save(tenant);
 	}
 
+	
+	//List all tenants
 	@Override
 	public List<Tenant> listAllTenant() {
 		return tenantRepository.findAll();
 	}
 
 
+	//Show tenant by tenant id
 	@Override
 	public Tenant showTenantById(String tenantId) {
 		return tenantRepository.findById(tenantId)
 				.orElseThrow(() -> new NoSuchElementException("Tenant with tenantId " + tenantId + " not found"));
 	}
 
+	
+	//Delete tenant by tenant id
 	@Override
 	public void deleteTenant(String tenantId) {
 		tenantRepository.deleteById(tenantId);
 
 	}
 
+	
+	//Update tenant by tenant id
 	@Override
 	public void updateTenant(String tenantId, Tenant tenant) throws ResourceNotFoundException {
 		Tenant existingTenant = showTenantById(tenantId);
@@ -55,7 +64,6 @@ public class TenantServiceImpl implements TenantService {
 			existingTenant.setTenantFname(tenant.getTenantFname());
 			existingTenant.setTenantLname(tenant.getTenantLname());
 			existingTenant.setTenantEmail(tenant.getTenantEmail());
-			existingTenant.setTenantPassword(tenant.getTenantPassword());
 			existingTenant.setTenantPhone(tenant.getTenantPhone());
 			tenantRepository.save(existingTenant);
 		} else {
@@ -65,6 +73,7 @@ public class TenantServiceImpl implements TenantService {
 	}
 
 	
+	//Find tenant by email and password
 	@Override
 	public Tenant findByEmailAndPassword(String email, String password) {
 	    Tenant tenant = tenantRepository.findByTenantEmail(email);
@@ -82,8 +91,11 @@ public class TenantServiceImpl implements TenantService {
 	}
 
 	
+	
+	//Reset password
 	@Override
     public void resetPassword(String email, String newPassword) throws ResourceNotFoundException {
+		System.out.println(email);
         Tenant tenant = tenantRepository.findByTenantEmail(email);
         if (tenant != null) {
             // Encode the new password before saving
@@ -95,9 +107,35 @@ public class TenantServiceImpl implements TenantService {
         }
     }
 	
+	
+	//To check user exists by tenant email
 	@Override
 	public boolean emailExists(String email) {
 	    return tenantRepository.findByTenantEmail(email) != null;
+	}
+
+	
+	//To update password
+	@Override
+	public boolean updatePassword(String tenantId, String currentPassword, String newPassword) throws ResourceNotFoundException {
+	    Tenant tenant = showTenantById(tenantId);
+	    if (tenant != null) {
+	        // Decrypt the current password for comparison
+	        String decryptedCurrentPassword = new String(Base64.getDecoder().decode(tenant.getTenantPassword()));
+	        
+	        // Verify if the current password matches
+	        if (decryptedCurrentPassword.equals(currentPassword)) {
+	            // Encrypt the new password before saving
+	            String encryptedNewPassword = Base64.getEncoder().encodeToString(newPassword.getBytes());
+	            tenant.setTenantPassword(encryptedNewPassword);
+	            tenantRepository.save(tenant);
+	            return true; // Password updated successfully
+	        } else {
+	            return false; // Current password did not match
+	        }
+	    } else {
+	        throw new ResourceNotFoundException("Tenant not found");
+	    }
 	}
 
 }

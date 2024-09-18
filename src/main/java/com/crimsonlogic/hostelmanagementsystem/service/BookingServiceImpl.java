@@ -31,27 +31,33 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private TenantService tenantService;
 	
-
+    //Creates room booking
 	@Override
 	public Booking createBooking(Booking booking) {
 		return bookingRepository.save(booking);
 	}
 
+	//Lists all booking
 	@Override
 	public List<Booking> listAllBooking() {
 		return bookingRepository.findAll();
 	}
 
+	//Lists booking by booking id
 	@Override
 	public Booking showBookingById(String bookingId) {
 		return bookingRepository.findById(bookingId).get();
 	}
 
+	
+	//	Delete booking by booking id
 	@Override
 	public void deleteBooking(String bookingId) {
 		bookingRepository.deleteById(bookingId);
 	}
 
+	
+	//Update booking by booking id
 	@Override
 	public void updateBooking(String bookingId, Booking booking) throws ResourceNotFoundException {
 		Booking existingBooking = showBookingById(bookingId);
@@ -66,6 +72,8 @@ public class BookingServiceImpl implements BookingService {
 		}
 	}
 	
+	
+	//Confirm booking by tenant
 	@Override
     public Booking confirmBooking(String roomId, String tenantId, Date checkInDate, Date checkOutDate) {
         Room room = roomService.showRoomById(roomId);
@@ -91,18 +99,24 @@ public class BookingServiceImpl implements BookingService {
     }
 
 	
+	  //Show bookings by tenant id
 	  @Override public List<Booking> getBookingsByTenant(String tenantId) { return
 	  bookingRepository.findByTenant_TenantId(tenantId); }
 	  
+	  //Show bookings by room id
 	  @Override public List<Booking> getBookingsByRoom(String roomId) { return
 	  bookingRepository.findByRoom_RoomId(roomId); }
 	  
+	  //Show bookings by booking status
 	  @Override public List<Booking> getBookingsByStatus(String status) { return
 	  bookingRepository.findByStatus(status); }
 	  
+	  //calculate total revenue
 	  @Override public BigDecimal calculateTotalRevenue() { return
 	  bookingRepository.calculateTotalRevenue(); }
 	  
+	  
+	  //calculate monthly revenue
 	  public List<MonthlyRevenue> calculateMonthlyRevenue(int year) {
 	        return bookingRepository.calculateMonthlyRevenue(year);
 	    }

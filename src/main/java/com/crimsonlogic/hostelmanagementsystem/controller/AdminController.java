@@ -15,6 +15,12 @@ import com.crimsonlogic.hostelmanagementsystem.service.BookingService;
 import com.crimsonlogic.hostelmanagementsystem.service.TenantService;
 import com.crimsonlogic.hostelmanagementsystem.util.MonthlyRevenue;
 
+
+/**
+ * Represents a booking in the hostel management system.
+ * Author: Preetham A A
+ */
+
 @Controller
 @RequestMapping("/manager")
 public class AdminController {
@@ -27,22 +33,16 @@ public class AdminController {
     @Autowired
     private BookingService bookingService;
 
-    // Admin dashboard
+    // Redirects to admin dashboard
     @GetMapping("/dashboard")
     public String showAdminDashboard(Model model) {
     	LOG.debug("inside showAdminDashboard handler method");
         // You can load admin-specific data here, such as the list of all tenants or stats
         model.addAttribute("tenants", tenantServ.listAllTenant());
-        
-        
         int year = LocalDate.now().getYear();  // Get current year
         List<MonthlyRevenue> monthlyRevenue = bookingService.calculateMonthlyRevenue(year);
-
         model.addAttribute("monthlyRevenue", monthlyRevenue);
-        
-        
         return "managerdashboard";  // Return the admin dashboard JSP page
     }
 
-    // Additional admin routes for managing tenants, properties, etc.
 }

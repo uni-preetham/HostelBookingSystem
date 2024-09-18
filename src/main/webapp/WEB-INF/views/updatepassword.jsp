@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <!DOCTYPE html>
 <html>
 <head>
-<title>Tenant Login</title>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
@@ -14,6 +14,14 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
 <style>
+.was-validated .form-control:invalid {
+	border-color: #dc3545;
+}
+
+.form-control:valid {
+	border-color: #28a745;
+}
+
 .bg-cyan {
 	background: #CAF0FF;
 }
@@ -55,7 +63,7 @@
 	<!-- Display success message if present -->
 	<c:if test="${param.success != null}">
 		<div class="bg-success text-white font-weight-bold py-2 text-center"
-			role="alert">Please login to continue</div>
+			role="alert">Registration successful!</div>
 	</c:if>
 
 	<!-- Display error message if present -->
@@ -68,7 +76,7 @@
 	<section>
 		<div class="row">
 			<div class="col-4 hero p-5">
-				<a class="navbar-brand" href="${pageContext.request.contextPath}/">
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/tenant/dashboard">
 					<svg width="140" height="43" viewBox="0 0 140 43" fill="none"
 						xmlns="http://www.w3.org/2000/svg">
 <path
@@ -116,67 +124,117 @@
 
 			</div>
 			<div class="col-8 d-flex flex-column justify-content-center">
-				<h2 class="text-center">Login Here</h2>
+				<h2 class="text-center mb-3 text-grey">Change your password</h2>
 				<div class="row justify-content-center">
 					<div class="col-md-6">
-
-
-						<form action="${pageContext.request.contextPath}/tenant/login"
+						<form
+							action="${pageContext.request.contextPath}/tenant/updatepassword"
 							method="post">
-							<div class="form-group mt-3 mb-2">
-								<label for="username" class="fw-semibold">Email</label> <input
-									type="text" class="form-control" id="email" name="tenantEmail"
-									placeholder="" required>
+							<input type="hidden" name="tenantId" value="${tenantId}" />
+							
+							<!-- Current Password Field -->
+    <div class="form-group form-floating mb-2">
+        <input type="password" id="currentPassword" name="currentPassword" class="form-control" required minlength="8" placeholder="">
+        <label for="currentPassword">Enter Current Password</label>
+        <div class="invalid-feedback" id="currentFeedback"></div>
+    </div>
+							
+							<div class="form-group form-floating">
+								 <input
+									type="password" id="newPassword" pattern="(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" name="newPassword" required class="form-control mb-2" placeholder=""/>
+									<label for="newPassword">New Password:</label>
+									<div class="invalid-feedback" id="passwordFeedback"></div>
 							</div>
-
-							<div class="form-group">
-								<div class="d-flex justify-content-between">
-									<label for="password" class="fw-semibold">Password</label><a
-										href="${pageContext.request.contextPath}/tenant/forgotPassword" class="text-dark" style="font-size:12px;">Forgot
-										password?</a>
-								</div>
-
-								<div class="input-group mb-3">
-									<input type="password" class="form-control" id="password"
-										name="tenantPassword" placeholder="" required>
-									<button class="btn btn-outline-primary" type="button"
-										id="button-addon2">
-										<i class="fa-solid fa-eye"></i>
-									</button>
-								</div>
+							
+							<div class="form-group form-floating mb-2">
+								<input type="password" id="confirmPassword"
+									name="confirmPassword" class="form-control" required
+									minlength="8" placeholder=""> <label
+									for="confirmPassword">Confirm Password</label>
+								<div class="invalid-feedback" id="confirmFeedback"></div>
 							</div>
-
-							<button type="submit" class="button w-100 btn-block mb-3">Login</button>
+							
+							<div>
+								<button type="submit" class="button w-100 btn-block my-3">Update Password</button>
+							</div>
 						</form>
-
-
-						<p class="text-center">
-							Don't have an account? <a
-								href="${pageContext.request.contextPath}/tenant/registertenantform"
-								class="text-dark">Sign up</a>
-						</p>
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</section>
 
 	<script>
-		const passwordField = document.getElementById('password');
-		const togglePasswordBtn = document.getElementById('button-addon2');
-
-		togglePasswordBtn
+		document
 				.addEventListener(
-						'click',
+						"DOMContentLoaded",
 						function() {
-							const type = passwordField.getAttribute('type') === 'password' ? 'text'
-									: 'password';
-							passwordField.setAttribute('type', type);
-							this.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>'
-									: '<i class="fa-solid fa-eye-slash"></i>';
+							const form = document.querySelector("form");
+							const newPassword = document
+									.getElementById("newPassword");
+							const confirmPassword = document
+									.getElementById("confirmPassword");
+							const confirmFeedback = document
+									.getElementById("confirmFeedback");
+							const passwordFeedback = document
+									.getElementById("passwordFeedback");
+
+							// Real-time validation for new password
+							newPassword
+									.addEventListener(
+											"input",
+											function() {
+												if (newPassword.checkValidity()) {
+													passwordFeedback.textContent = ""; // Clear feedback
+													newPassword.classList
+															.remove("is-invalid");
+													newPassword.classList
+															.add("is-valid");
+												} else {
+													passwordFeedback.textContent = "Password must be at least 8 characters long, include at least one uppercase letter, one number, and one special character.";
+													newPassword.classList
+															.add("is-invalid");
+													newPassword.classList
+															.remove("is-valid");
+												}
+												validatePassword(); // Check confirmation password
+											});
+
+							// Real-time validation for confirm password
+							confirmPassword.addEventListener("input",
+									validatePassword);
+
+							function validatePassword() {
+								if (newPassword.value === confirmPassword.value) {
+									confirmFeedback.textContent = ""; // Clear any feedback
+									confirmPassword.classList
+											.remove("is-invalid");
+									confirmPassword.classList.add("is-valid");
+								} else {
+									confirmFeedback.textContent = "Passwords do not match.";
+									confirmPassword.classList.add("is-invalid");
+									confirmPassword.classList
+											.remove("is-valid");
+								}
+							}
+
+							// Form submission validation
+							form
+									.addEventListener(
+											'submit',
+											function(event) {
+												if (form.checkValidity() === false
+														|| newPassword.value !== confirmPassword.value) {
+													event.preventDefault();
+													event.stopPropagation();
+													validatePassword(); // Check final validation on submit
+												}
+												form.classList
+														.add('was-validated');
+											}, false);
 						});
 	</script>
+
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

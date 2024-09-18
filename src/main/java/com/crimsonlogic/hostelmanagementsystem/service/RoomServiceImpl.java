@@ -18,21 +18,29 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private RoomRepository roomRepository;
 
+    
+    //Add room
     @Override
     public Room addRoom(Room room) {
         return roomRepository.save(room);
     }
 
+    
+    //List all rooms
     @Override
     public List<Room> listAllRooms() {
         return roomRepository.findAll();
     }
 
+    
+    //List room by room id
     @Override
     public Room showRoomById(String roomId) {
         return roomRepository.findById(roomId).get();
     }
 
+    
+    //Delete room by room id
     @Override
     public void deleteRoom(String roomId) {
         Room room = showRoomById(roomId);
@@ -41,6 +49,8 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
+    
+    //Update room by room id
     @Override
     public void updateRoom(String roomId, Room room) throws ResourceNotFoundException {
         Room existingRoom = showRoomById(roomId);
@@ -57,12 +67,14 @@ public class RoomServiceImpl implements RoomService {
         }
     }
     
+    
+    //Show rooms by hostel id
     @Override
     public List<Room> getRoomsByHostel(String hostelId) {
         return roomRepository.findByHostel_HostelId(hostelId);  // Custom query to find rooms by hostel
     }
     
- // Find rooms by hostel ID
+    //Find rooms by hostel ID
     @Override
     public List<Room> findRoomsByHostelId(String hostelId) {
         return roomRepository.findByHostelHostelId(hostelId);

@@ -11,6 +11,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+
+/**
+ * Represents a booking in the hostel management system.
+ * Author: Preetham A A
+ */
+
 @Data
 @NoArgsConstructor
 @Entity

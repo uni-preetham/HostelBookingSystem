@@ -8,6 +8,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
+
+/**
+ * Represents a booking in the hostel management system.
+ * Author: Preetham A A
+ */
+
 @Data
 @NoArgsConstructor
 @Entity

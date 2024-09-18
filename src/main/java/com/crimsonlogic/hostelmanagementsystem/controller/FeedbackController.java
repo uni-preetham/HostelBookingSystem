@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.crimsonlogic.hostelmanagementsystem.entity.Feedback;
 import com.crimsonlogic.hostelmanagementsystem.service.FeedbackService;
 
+
+/**
+ * Represents feedback in the hostel management system.
+ * Author: Preetham A A
+ */
+
 @Controller
 @RequestMapping("/feedback")
 public class FeedbackController {
@@ -25,6 +31,11 @@ public class FeedbackController {
 	@Autowired
 	private FeedbackService feedbackService;
 
+	
+	/*
+	 * Displays the feedback form.
+	 * 
+	 */
 	@GetMapping("/showfeedbackform")
 	public String showFeedbackForm(Model model) {
 		LOG.debug("inside showFeedbackForm handler method");
@@ -32,6 +43,10 @@ public class FeedbackController {
 		return "feedbackform";
 	}
 
+	/*
+	 * Submit the feedback form.
+	 * 
+	 */
 	@PostMapping("/submit")
 	public String submitFeedback(@RequestParam("tenantId") String tenantId,
 			@RequestParam("description") String description, Model model) {
@@ -40,7 +55,11 @@ public class FeedbackController {
 		model.addAttribute("message", "Feedback sent successfully");
 		return "tenantdashboard";
 	}
-
+	
+	/*
+	 * View the feedback in admin.
+	 * 
+	 */
 	@GetMapping("/viewfeedback")
 	public String viewComplaints(Model model) {
 		List<Feedback> feedbacks = feedbackService.getAllFeedback();
@@ -48,6 +67,10 @@ public class FeedbackController {
 		return "feedbacklist";
 	}
 
+	/*
+	 * Update the status in feedback list.
+	 * 
+	 */
 	@PostMapping("/update-status/{feedbackId}")
 	public String updateFeedbackStatus(@PathVariable String feedbackId, @RequestParam("status") String status) {
 		feedbackService.updateFeedbackStatus(feedbackId, status);

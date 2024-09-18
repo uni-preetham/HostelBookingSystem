@@ -16,6 +16,11 @@ import org.hibernate.annotations.GenericGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a booking in the hostel management system.
+ * Author: Preetham A A
+ */
+
 @Data
 @NoArgsConstructor
 @Entity

@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +18,12 @@ import com.crimsonlogic.hostelmanagementsystem.entity.Tenant;
 import com.crimsonlogic.hostelmanagementsystem.exception.ResourceNotFoundException;
 import com.crimsonlogic.hostelmanagementsystem.service.HostelService;
 import com.crimsonlogic.hostelmanagementsystem.service.TenantService;
+
+
+/**
+ * Represents a booking in the hostel management system.
+ * Author: Preetham A A
+ */
 
 @Controller
 @RequestMapping("/tenant")
@@ -32,77 +37,99 @@ public class TenantController {
     @Autowired
     private HostelService hostelService;
     
-    // Show registration form
     @GetMapping("/registertenantform")
     public String showRegistrationForm(Model model) {
     	LOG.debug("inside showRegistrationForm handler method");
-        model.addAttribute("tenant", new Tenant());  // Bind an empty tenant object for form
-        return "registertenant";  // Return the name of the form (HTML or JSP)
+        model.addAttribute("tenant", new Tenant()); 
+        return "registertenant"; 
     }
 
-    // Handle form submission
+    
+    /*
+	 * Register a user.
+	 * 
+	 */
     @PostMapping("/register")
     public String registerTenant(@ModelAttribute("tenant") Tenant tenant, Model model) {
     	LOG.debug("inside registerTenant handler method");
-        tenantService.registerTenant(tenant);  // Register tenant using service
-        model.addAttribute("tenants", tenantService.listAllTenant());  // Reload list of tenants
-        return "redirect:/tenant/loginform?success";  // Redirect to the login form after registration
+        tenantService.registerTenant(tenant); 
+        model.addAttribute("tenants", tenantService.listAllTenant()); 
+        return "redirect:/tenant/loginform?success";
     }
 
-    // List all tenants
+    /*
+	 * Displays the tenant list.
+	 * 
+	 */
     @GetMapping("/listalltenant")
     public String listAllTenants(Model model) {
     	LOG.debug("inside listAllTenants handler method");
         model.addAttribute("tenants", tenantService.listAllTenant());
-        return "tenantlist";  // The view that lists all tenants
+        return "tenantlist"; 
     }
 
+    
+    /*
+	 * Displays the tenant by id.
+	 * 
+	 */
     @GetMapping("/showtenantbyid/{tenantId}")
     public Tenant showTenantById(@PathVariable("tenantId") String tenantId) {
         return tenantService.showTenantById(tenantId);
     }
 
-    @DeleteMapping("/deletetenant/{tenantId}")
-    public void deleteCustomer(@PathVariable("tenantId") String tenantId) {
-        tenantService.deleteTenant(tenantId);
-    }
     
+    /*
+	 * Displays the edit user form.
+	 * 
+	 */
     @GetMapping("/edituserform/{tenantId}")
     public String showEditUserForm(@PathVariable("tenantId") String tenantId, Model model) {
         Tenant tenantDetails = tenantService.showTenantById(tenantId);
         if (tenantDetails != null) {
-            model.addAttribute("tenant", tenantDetails); // Add tenant details to the model
+            model.addAttribute("tenant", tenantDetails); 
             return "edittenant";
         }
-        return "redirect:/tenant/listalltenant"; // Redirect if tenant not found
+        return "redirect:/tenant/listalltenant"; 
     }
 
+    
+    /*
+	 * Update the tenant details.
+	 * 
+	 */
     @PostMapping("/updatetenant")
     public String updateTenant(@ModelAttribute Tenant tenant, Model model, HttpSession session)
             throws ResourceNotFoundException {
         if (tenant != null && tenant.getTenantId() != null) {
             tenantService.updateTenant(tenant.getTenantId(), tenant);
-//            Tenant updatedTenant = tenantService.findByEmailAndPassword(tenant.getTenantEmail(), tenant.getTenantPassword());
             Tenant updatedTenant = tenantService.showTenantById(tenant.getTenantId());
             System.out.println(updatedTenant);
             session.setAttribute("user", updatedTenant);
             model.addAttribute("message", "User details updated successfully.");
-            return "tenantdashboard"; // Redirect to the dashboard after update
+            return "tenantdashboard";
             
         }
-        return "redirect:/tenant/listalltenant"; // Redirect if tenant ID is missing
+        return "redirect:/tenant/listalltenant";
     }
 
-
-    // Show login form
+    
+    /*
+	 * Displays the login form.
+	 * 
+	 */
     @GetMapping("/loginform")
     public String showLoginForm(Model model) {
     	LOG.debug("inside showLoginForm handler method");
-        model.addAttribute("tenant", new Tenant());  // Bind an empty tenant object for form
-        return "login";  // Return the login JSP page
+        model.addAttribute("tenant", new Tenant()); 
+        return "login"; 
     }
 
-    // Handle login submission
+    
+    /*
+	 * User login.
+	 * 
+	 */
     @PostMapping("/login")
     public String loginTenant(@ModelAttribute("tenant") Tenant tenant, Model model, HttpSession session) {
 
@@ -112,53 +139,66 @@ public class TenantController {
         
         if (existingTenant != null) {
             if (existingTenant.getIsAdmin()) {
-                // Redirect to admin dashboard if user is an admin
             	session.setAttribute("user", existingTenant);
                 return "redirect:/manager/dashboard";
             } else {
-                // Redirect to tenant dashboard if user is not an admin
             	session.setAttribute("user", existingTenant);
                 return "redirect:/tenant/dashboard";
             }
         } else {
             model.addAttribute("error", "We couldn't find an account matching the username and password you entered. Please check your username and password and try again.");
-            return "login";  // Return to login page with error message
+            return "login"; 
         }
     }
 
-    // Tenant dashboard
+    
+    /*
+	 * Displays the customer dashboard.
+	 * 
+	 */
     @GetMapping("/dashboard")
     public String showTenantDashboard(Model model) {
     	LOG.debug("inside showTenantDashboard handler method");
     	model.addAttribute("hostellist",hostelService.listAllHostels());
-        return "tenantdashboard";  // Return the tenant dashboard JSP page
+        return "tenantdashboard"; 
     }
 
-    // Admin dashboard (for admins)
+    
+    /*
+	 * Displays the manager dashboard.
+	 * 
+	 */
     @GetMapping("/manager/dashboard")
     public String showAdminDashboard() {
-        return "managerdashboard";  // Return the admin dashboard JSP page
+        return "managerdashboard"; 
     }
     
-    //Logout (invalidating the session)
+    /*
+	 * Logs the user out.
+	 * 
+	 */
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();  // Invalidate the session
-        return "../../index";  // Redirect to login page after logout
+        session.invalidate(); 
+        return "../../index"; 
     }
     
-    
+    /*
+	 * Display forgot password form.
+	 * 
+	 */
     @GetMapping("/forgotPassword")
     public String showForgotPasswordForm() {
         return "forgotPassword";
     }
 
+    /*
+	 * Display OTP form.
+	 * 
+	 */
     @PostMapping("/sendOtp")
     public String sendOtp(@RequestParam("email") String email, Model model) {
-    	// Check if email exists
         if (tenantService.emailExists(email)) {
-            // Normally, you would send an OTP via email
-            // For this demo, we'll use a dummy OTP (123456)
             model.addAttribute("email", email);
             model.addAttribute("otp", "123456"); // Dummy OTP
             return "verifyotp";
@@ -168,9 +208,12 @@ public class TenantController {
         }
     }
 
+    /*
+	 * Displays the feedback form.
+	 * 
+	 */
     @PostMapping("/verifyOtp")
     public String verifyotp(@RequestParam("email") String email, @RequestParam("otp") String otp, Model model) {
-        // Check if OTP matches the dummy OTP
         if ("123456".equals(otp)) {
             model.addAttribute("email", email);
             return "resetPassword";
@@ -180,14 +223,55 @@ public class TenantController {
         }
     }
 
+    
+    /*
+	 * Reseting the password.
+	 * 
+	 */
     @PostMapping("/resetPassword")
     public String resetPassword(@RequestParam("email") String email, @RequestParam("newPassword") String newPassword, Model model) {
         try {
             tenantService.resetPassword(email, newPassword);
-            return "login"; // Page showing success message
+            return "login"; 
         } catch (ResourceNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "forgotPassword";
         }
     }
+    
+    
+    /*
+	 * Displays the update password form.
+	 * 
+	 */
+    @GetMapping("/updatepasswordform/{tenantId}")
+    public String showUpdatePasswordForm(@PathVariable("tenantId") String tenantId, Model model) {
+        model.addAttribute("tenantId", tenantId);
+        return "updatepassword";
+    }
+    
+    
+    /*
+	 * Update the user password.
+	 * 
+	 */
+    @PostMapping("/updatepassword")
+    public String updatePassword(@RequestParam("tenantId") String tenantId,
+                                 @RequestParam("currentPassword") String currentPassword,
+                                 @RequestParam("newPassword") String newPassword, 
+                                 Model model) {
+        try {
+            boolean isPasswordUpdated = tenantService.updatePassword(tenantId, currentPassword, newPassword);
+            if (isPasswordUpdated) {
+                return "redirect:/tenant/loginform?success"; // Redirect to login after successful password update
+            } else {
+                model.addAttribute("error", "Current password is incorrect");
+                return "updatepassword"; // Return to password update form if the current password is wrong
+            }
+        } catch (ResourceNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "updatepassword"; // Return to password update form on error
+        }
+    }
+
 }

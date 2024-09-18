@@ -26,6 +26,8 @@ import java.net.URL;
 @Transactional
 public class InvoiceServiceImpl implements InvoiceService {
 
+	
+	//Generate the invoice
     public void generateInvoice(HttpServletResponse response, Booking booking, Payment payment) throws DocumentException, IOException {
         // Set the response type to PDF
         response.setContentType("application/pdf");
@@ -57,7 +59,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         
         // Set fonts
         Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
-        Font regularFont = new Font(Font.FontFamily.HELVETICA, 12);
 
         // Add invoice title
         document.add(new Paragraph("Invoice", titleFont));

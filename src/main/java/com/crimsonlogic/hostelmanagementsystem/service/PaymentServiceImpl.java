@@ -18,21 +18,29 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    
+    //Add payment details
     @Override
     public Payment processPayment(Payment payment) {
         return paymentRepository.save(payment);
     }
 
+    
+    //List all payments made
     @Override
     public List<Payment> listAllPayments() {
         return paymentRepository.findAll();
     }
 
+    
+    //Show payment by payment id
     @Override
     public Payment showPaymentById(String paymentId) throws ResourceNotFoundException {
         return paymentRepository.findById(paymentId).get();
     }
 
+    
+    //Update payment by payment id
     @Override
     public void updatePayment(String paymentId, Payment payment) throws ResourceNotFoundException {
         Payment existingPayment = showPaymentById(paymentId);
@@ -44,6 +52,8 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(existingPayment);
     }
 
+    
+    //Delete payment by payment id
     @Override
     public void deletePayment(String paymentId) throws ResourceNotFoundException {
         Payment existingPayment = showPaymentById(paymentId);
@@ -54,6 +64,8 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
     
+    
+    //Find payment by booking id
     @Override
     public Payment findPaymentByBookingId(String bookingId) throws ResourceNotFoundException {
         Payment payment = paymentRepository.findByBookingBookingId(bookingId);
