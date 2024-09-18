@@ -116,45 +116,25 @@
 
 			</div>
 			<div class="col-8 d-flex flex-column justify-content-center">
-				<h2 class="text-center">Login Here</h2>
+				<h2 class="text-center text-grey mb-3">Enter OTP</h2>
 				<div class="row justify-content-center">
 					<div class="col-md-6">
 
 
-						<form action="${pageContext.request.contextPath}/tenant/login"
+						<form action="${pageContext.request.contextPath}/tenant/verifyOtp"
 							method="post">
-							<div class="form-group mt-3 mb-2">
-								<label for="username" class="fw-semibold">Email</label> <input
-									type="text" class="form-control" id="email" name="tenantEmail"
-									placeholder="" required>
+							<div class="form-group form-floating">
+								<input type="hidden" name="email" value="${email}"> <input class="form-control"
+									type="password" id="otp" name="otp" required placeholder=""> <label class="form-label"
+									for="otp">OTP</label>
 							</div>
-
-							<div class="form-group">
-								<div class="d-flex justify-content-between">
-									<label for="password" class="fw-semibold">Password</label><a
-										href="${pageContext.request.contextPath}/tenant/forgotPassword" class="text-dark" style="font-size:12px;">Forgot
-										password?</a>
-								</div>
-
-								<div class="input-group mb-3">
-									<input type="password" class="form-control" id="password"
-										name="tenantPassword" placeholder="" required>
-									<button class="btn btn-outline-primary" type="button"
-										id="button-addon2">
-										<i class="fa-solid fa-eye"></i>
-									</button>
-								</div>
-							</div>
-
-							<button type="submit" class="button w-100 btn-block mb-3">Login</button>
+							<button type="submit" class="button w-100 btn-block my-3">
+								Submit</button>
 						</form>
 
 
-						<p class="text-center">
-							Don't have an account? <a
-								href="${pageContext.request.contextPath}/tenant/registertenantform"
-								class="text-dark">Sign up</a>
-						</p>
+
+
 					</div>
 				</div>
 			</div>

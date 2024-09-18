@@ -14,6 +14,14 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
 <style>
+.was-validated .form-control:invalid {
+	border-color: #dc3545;
+}
+
+.form-control:valid {
+	border-color: #28a745;
+}
+
 .bg-cyan {
 	background: #CAF0FF;
 }
@@ -116,45 +124,29 @@
 
 			</div>
 			<div class="col-8 d-flex flex-column justify-content-center">
-				<h2 class="text-center">Login Here</h2>
+				<h2 class="text-center mb-3 text-grey">Reset Password</h2>
 				<div class="row justify-content-center">
 					<div class="col-md-6">
 
 
-						<form action="${pageContext.request.contextPath}/tenant/login"
+						<form id="otpForm"
+							action="${pageContext.request.contextPath}/tenant/sendOtp"
 							method="post">
-							<div class="form-group mt-3 mb-2">
-								<label for="username" class="fw-semibold">Email</label> <input
-									type="text" class="form-control" id="email" name="tenantEmail"
-									placeholder="" required>
+							<div class="form-group form-floating mb-2">
+								<input type="email" id="email" name="email" class="form-control"
+									required
+									pattern="^[a-zA-Z0-9._%+-]{1,50}@[a-zA-Z0-9.-]{1,20}\.com$"
+									placeholder=""> <label for="email">Email</label>
+								<div class="invalid-feedback">Please enter a valid email
+									address in the format example@domain.com with specific length
+									constraints.</div>
 							</div>
-
-							<div class="form-group">
-								<div class="d-flex justify-content-between">
-									<label for="password" class="fw-semibold">Password</label><a
-										href="${pageContext.request.contextPath}/tenant/forgotPassword" class="text-dark" style="font-size:12px;">Forgot
-										password?</a>
-								</div>
-
-								<div class="input-group mb-3">
-									<input type="password" class="form-control" id="password"
-										name="tenantPassword" placeholder="" required>
-									<button class="btn btn-outline-primary" type="button"
-										id="button-addon2">
-										<i class="fa-solid fa-eye"></i>
-									</button>
-								</div>
-							</div>
-
-							<button type="submit" class="button w-100 btn-block mb-3">Login</button>
+							<button type="submit" class="button w-100 btn-block my-3">Get
+								OTP</button>
 						</form>
 
 
-						<p class="text-center">
-							Don't have an account? <a
-								href="${pageContext.request.contextPath}/tenant/registertenantform"
-								class="text-dark">Sign up</a>
-						</p>
+
 					</div>
 				</div>
 			</div>
@@ -163,20 +155,33 @@
 	</section>
 
 	<script>
-		const passwordField = document.getElementById('password');
-		const togglePasswordBtn = document.getElementById('button-addon2');
+    (function() {
+        'use strict';
+        var form = document.getElementById('otpForm');
+        var emailField = document.getElementById('email');
 
-		togglePasswordBtn
-				.addEventListener(
-						'click',
-						function() {
-							const type = passwordField.getAttribute('type') === 'password' ? 'text'
-									: 'password';
-							passwordField.setAttribute('type', type);
-							this.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>'
-									: '<i class="fa-solid fa-eye-slash"></i>';
-						});
-	</script>
+        // Enable real-time validation for the email input
+        emailField.addEventListener('input', function(event) {
+            if (emailField.checkValidity()) {
+                emailField.classList.remove('is-invalid');
+                emailField.classList.add('is-valid');
+            } else {
+                emailField.classList.remove('is-valid');
+                emailField.classList.add('is-invalid');
+            }
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                emailField.classList.add('is-invalid'); // Show invalid class on submit if not valid
+            }
+            form.classList.add('was-validated'); // Add validation class
+        }, false);
+    })();
+</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

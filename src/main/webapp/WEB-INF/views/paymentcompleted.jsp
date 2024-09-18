@@ -6,7 +6,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta http-equiv="refresh"
-	content="5;url=${pageContext.request.contextPath}/tenant/dashboard">
+	content="10;url=${pageContext.request.contextPath}/tenant/dashboard">
 <title>Insert title here</title>
 <title>Zyloz | Edit Room</title>
 <link rel="stylesheet"
@@ -55,7 +55,7 @@
 
 <script type="text/javascript">
 	// Countdown and redirect logic
-	var timeLeft = 4; // 5 seconds countdown
+	var timeLeft = 9; // 5 seconds countdown
 	function countdown() {
 		var countdownElement = document.getElementById("countdown");
 		countdownElement.innerHTML = "You will be redirected in " + timeLeft

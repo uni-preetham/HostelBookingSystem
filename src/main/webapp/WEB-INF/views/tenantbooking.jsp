@@ -149,7 +149,7 @@
 										<p class="text-grey fw-semibold card-text"
 											style="font-size: 18px;">${booking.room.hostel.hostelName}</p>
 										<p class="text-grey text-capitalize card-text"
-											style="font-size: 14px;">${booking.room.roomType}room</p>
+											style="font-size: 14px;">${booking.room.roomType} room</p>
 									</div>
 									<p class="text-grey text-capitalize card-text"
 										style="font-size: 14px;">Room: ${booking.room.roomNumber}</p>

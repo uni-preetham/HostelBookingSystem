@@ -149,7 +149,7 @@
 							<div class="form-group form-floating mb-2">
 								<textarea id="hostelDescription" name="hostelDescription"
 									class="form-control" placeholder="" rows="3" required
-									minlength="10" maxlength="500"></textarea>
+									minlength="5" maxlength="500"></textarea>
 								<label for="hostelDescription">Hostel Description</label>
 								<div class="invalid-feedback">Hostel Description is
 									required.</div>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.crimsonlogic.hostelmanagementsystem.entity.Tenant;
 import com.crimsonlogic.hostelmanagementsystem.exception.ResourceNotFoundException;
@@ -144,5 +145,49 @@ public class TenantController {
     public String logout(HttpSession session) {
         session.invalidate();  // Invalidate the session
         return "../../index";  // Redirect to login page after logout
+    }
+    
+    
+    @GetMapping("/forgotPassword")
+    public String showForgotPasswordForm() {
+        return "forgotPassword";
+    }
+
+    @PostMapping("/sendOtp")
+    public String sendOtp(@RequestParam("email") String email, Model model) {
+    	// Check if email exists
+        if (tenantService.emailExists(email)) {
+            // Normally, you would send an OTP via email
+            // For this demo, we'll use a dummy OTP (123456)
+            model.addAttribute("email", email);
+            model.addAttribute("otp", "123456"); // Dummy OTP
+            return "verifyotp";
+        } else {
+            model.addAttribute("error", "Email not found");
+            return "forgotPassword";
+        }
+    }
+
+    @PostMapping("/verifyOtp")
+    public String verifyotp(@RequestParam("email") String email, @RequestParam("otp") String otp, Model model) {
+        // Check if OTP matches the dummy OTP
+        if ("123456".equals(otp)) {
+            model.addAttribute("email", email);
+            return "resetPassword";
+        } else {
+            model.addAttribute("error", "Invalid OTP");
+            return "verifyotp";
+        }
+    }
+
+    @PostMapping("/resetPassword")
+    public String resetPassword(@RequestParam("email") String email, @RequestParam("newPassword") String newPassword, Model model) {
+        try {
+            tenantService.resetPassword(email, newPassword);
+            return "login"; // Page showing success message
+        } catch (ResourceNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "forgotPassword";
+        }
     }
 }

@@ -156,9 +156,9 @@
 
 			</div>
 			<div class="col-8 p-5 d-flex flex-column justify-content-center">
-				<div class="row justify-content-center" style="gap: 40px;">
+				<div class="row" style="gap: 40px;">
 					<div
-						class="container"
+						class="container d-flex flex-wrap justify-content-center"
 						style="gap: 20px;">
 						<c:forEach var="location" items="${hostellist}">
 							<div class="card mb-2" style="width:18rem;">

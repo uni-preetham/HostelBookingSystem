@@ -12,4 +12,6 @@ public interface TenantService {
 	public void deleteTenant(String tenantId);
 	public void updateTenant(String tenantId, Tenant tenant) throws ResourceNotFoundException;
 	public Tenant findByEmailAndPassword(String email, String password);
+	public void resetPassword(String email, String newPassword) throws ResourceNotFoundException;
+	public boolean emailExists(String email);
 }

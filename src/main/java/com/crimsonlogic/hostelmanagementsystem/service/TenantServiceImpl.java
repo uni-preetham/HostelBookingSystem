@@ -81,4 +81,23 @@ public class TenantServiceImpl implements TenantService {
 	    return null;
 	}
 
+	
+	@Override
+    public void resetPassword(String email, String newPassword) throws ResourceNotFoundException {
+        Tenant tenant = tenantRepository.findByTenantEmail(email);
+        if (tenant != null) {
+            // Encode the new password before saving
+            String encryptedPassword = Base64.getEncoder().encodeToString(newPassword.getBytes());
+            tenant.setTenantPassword(encryptedPassword);
+            tenantRepository.save(tenant);
+        } else {
+            throw new ResourceNotFoundException("Tenant with email " + email + " not found");
+        }
+    }
+	
+	@Override
+	public boolean emailExists(String email) {
+	    return tenantRepository.findByTenantEmail(email) != null;
+	}
+
 }
