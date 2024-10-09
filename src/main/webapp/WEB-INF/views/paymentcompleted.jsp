@@ -112,7 +112,7 @@
 				<div class="" id="navbarNavAltMarkup">
 					<div class="navbar-nav">
 						<a class="nav-item nav-link text-grey"
-							href="${pageContext.request.contextPath}/manager/dashboard">Home</a>
+							href="${pageContext.request.contextPath}/tenant/dashboard">Home</a>
 
 						<a class="nav-item nav-link text-grey"
 							href="${pageContext.request.contextPath}/booking/viewbooking/${sessionScope.user.tenantId}">View

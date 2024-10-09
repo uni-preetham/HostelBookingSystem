@@ -141,25 +141,6 @@
 
 							</div>
 
-							<!-- Username Field -->
-							<!-- <div class="form-group form-floating mb-2">
-								 <input type="text"
-									id="tenantUsername" name="tenantUsername" class="form-control"
-									required pattern="^[a-zA-Z0-9_]{5,15}$" placeholder=""><label for="tenantUsername">Username</label>
-								<div class="invalid-feedback">Username should be 5-15
-									characters long and can only contain letters, numbers, and
-									underscores.</div>
-							</div> -->
-
-							<!-- Email Field -->
-							<!-- <div class="form-group form-floating mb-2">
-								<input type="email"
-									id="tenantEmail" name="tenantEmail" class="form-control"
-									required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com)$" placeholder=""><label for="tenantEmail">Email</label> 
-								<div class="invalid-feedback">Please enter a valid email
-									address in the format example@domain.com.</div>
-							</div> -->
-
 
 							<!-- Email Field -->
 							<div class="form-group form-floating mb-2">
@@ -168,8 +149,7 @@
 									pattern="^[a-zA-Z0-9._%+-]{1,50}@[a-zA-Z0-9.-]{1,20}\.com$"
 									placeholder=""> <label for="tenantEmail">Email</label>
 								<div class="invalid-feedback">Please enter a valid email
-									address in the format example@domain.com with specific length
-									constraints.</div>
+									address(accepts 70 characters).</div>
 							</div>
 
 

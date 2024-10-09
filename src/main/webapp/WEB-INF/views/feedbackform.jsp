@@ -136,7 +136,7 @@
                     <form id="feedbackForm" action="${pageContext.request.contextPath}/feedback/submit" method="post">
                         <input type="hidden" name="tenantId" value="${sessionScope.user.tenantId}" />
                         <div class="form-group form-floating mb-2">
-                            <textarea name="description" id="description" class="form-control" required placeholder=""></textarea>
+                            <textarea name="description" id="description" class="form-control" required placeholder="" maxlength="200"></textarea>
                             <label for="description">Feedback</label>
                             <div id="descriptionFeedback" class="invalid-feedback">
                                 Please provide your feedback.

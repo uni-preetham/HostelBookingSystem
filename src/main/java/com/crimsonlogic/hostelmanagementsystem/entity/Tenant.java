@@ -34,9 +34,6 @@ public class Tenant {
     @Column(name = "tenant_lname", nullable = false)
     private String tenantLname;
     
-//    @Column(name = "tenant_username", unique = true, nullable = false)
-//    private String tenantUsername;
-    
     @Column(name = "tenant_email", unique = true, nullable = false)
     private String tenantEmail;
     

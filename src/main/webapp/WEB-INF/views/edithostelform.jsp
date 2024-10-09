@@ -119,7 +119,7 @@
 	<section>
     <div class="row">
         <div class="col-4 hero p-5 position-relative">
-        <img style="max-height: 600px; position: absolute; left:0px; bottom:0px;" src="https://github.com/uni-preetham/Test/blob/master/1000042582%20(1).png?raw=true">
+        <img style="max-height: 600px; position: absolute; left:0px; bottom:0px;" src="https://github.com/uni-preetham/Test/blob/master/1000042582.png?raw=true">
         </div>
         <div class="col-8 p-5 d-flex flex-column justify-content-center">
             <h2 class="text-center mb-3">Edit Hostel</h2>
